@@ -16,5 +16,17 @@ if ($uri === '/login') {
     exit;
 }
 
-header('Content-Type: application/json; charset=UTF-8');
-echo json_encode(['error' => 'Not Found'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+require __DIR__.'/../vendor/autoload.php';
+
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+
+/** @var Application $app */
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+$app->handleRequest(Request::capture());
+exit;
