@@ -2,8 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return response()->make(file_get_contents(public_path('index.html')), 200, [
-        'Content-Type' => 'text/html; charset=UTF-8',
-    ]);
-});
+Route::get('/', fn () => 'OK');
