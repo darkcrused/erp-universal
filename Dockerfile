@@ -40,4 +40,4 @@ RUN mkdir -p /tmp/views bootstrap/cache storage/framework/{cache,data,sessions,v
 
 EXPOSE 80
 
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=80"]
+CMD ["sh", "-c", "php artisan config:clear && php artisan route:clear && php artisan view:clear && php artisan serve --host=0.0.0.0 --port=80"]
