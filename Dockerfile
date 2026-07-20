@@ -24,12 +24,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+ENV VIEW_COMPILED_PATH=/tmp/views \
+    APP_CONFIG_CACHE=/tmp/config.php \
+    APP_SERVICES_CACHE=/tmp/services.php \
+    APP_PACKAGES_CACHE=/tmp/packages.php \
+    APP_EVENTS_CACHE=/tmp/events.php
+
 WORKDIR /var/www/html
 COPY . .
 
-RUN mkdir -p bootstrap/cache storage/framework/{cache,data,sessions,views} \
-    && composer install --no-dev --no-interaction --optimize-autoloader --no-progress \
-    && chown -R www-data:www-data storage bootstrap/cache
+RUN mkdir -p /tmp/views bootstrap/cache storage/framework/{cache,data,sessions,views} \
+    && composer install --no-dev --no-interaction --optimize-autoloader --no-progress --no-scripts \
+    && php artisan package:discover --ansi --no-interaction \
+    && chown -R www-data:www-data storage bootstrap/cache /tmp/views
 
 EXPOSE 80
 
