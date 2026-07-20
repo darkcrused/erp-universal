@@ -24,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
 
+        // Ensure web requests never depend on a database sessions table.
+        Config::set('session.driver', 'file');
+        Config::set('session.files', storage_path('framework/sessions'));
+
         // Set available locales from config/env
         $locales = explode(',', (string) Config::get('app.available_locales', 'pt_BR,en,es'));
         Config::set('app.available_locales', array_map('trim', $locales));
