@@ -6,6 +6,10 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
 // ── Public auth routes ──────────────────────────────────────────────────
+Route::get('login', fn () => response()->json([
+    'message' => 'Use POST /api/auth/login',
+    'fields' => ['email', 'password', 'tenant_id?'],
+]));
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
